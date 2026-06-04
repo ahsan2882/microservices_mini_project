@@ -11,18 +11,22 @@ app.post("/events", (req, res) => {
   const event = req.body;
   events.push(event);
   console.log("Event Received", event);
-  axios.post("http://localhost:4000/events", event).catch((err) => {
+  axios.post("http://posts-cluster-ip-srv:4000/events", event).catch((err) => {
     console.log("Error posting event to posts service", err.message);
   });
-  axios.post("http://localhost:4001/events", event).catch((err) => {
-    console.log("Error posting event to comments service", err.message);
-  });
-  axios.post("http://localhost:4002/events", event).catch((err) => {
+  axios
+    .post("http://comments-cluster-ip-srv:4001/events", event)
+    .catch((err) => {
+      console.log("Error posting event to comments service", err.message);
+    });
+  axios.post("http://query-cluster-ip-srv:4002/events", event).catch((err) => {
     console.log("Error posting event to query service", err.message);
   });
-  axios.post("http://localhost:4003/events", event).catch((err) => {
-    console.log("Error posting event to moderation service", err.message);
-  });
+  axios
+    .post("http://moderation-cluster-ip-srv:4003/events", event)
+    .catch((err) => {
+      console.log("Error posting event to moderation service", err.message);
+    });
   res.send({ status: "OK" });
 });
 

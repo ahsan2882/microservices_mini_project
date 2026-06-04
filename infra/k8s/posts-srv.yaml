@@ -11,3 +11,16 @@ spec:
       port: 4000
       targetPort: 4000
       name: posts-port
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: posts-cluster-ip-srv
+spec:
+  selector:
+    app: posts
+  ports:
+    - protocol: TCP
+      port: 4000
+      targetPort: 4000
+      name: posts-cluster-ip-port
